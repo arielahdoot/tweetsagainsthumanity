@@ -42,21 +42,7 @@ class PlayerView extends Component {
                   }}
                 >
                   <div class="content">
-                    <div
-                      style={{
-                        background: '#fff',
-                        overflowWrap: 'break-word',
-                        color: '#000',
-                        fontWeight: 'bold',
-                        minWidth: '4.32cm',
-                        minHeight: '10cm',
-                        fontSize: '1.25em',
-                        textAlign: 'left',
-                        verticalAlign: 'top'
-                        // display: 'inline-block',
-                        // margin: '0'
-                      }}
-                    >
+                    <div id="white-card">
                       Kristy is an art director living in New York.
                       WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                       WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO

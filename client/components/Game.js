@@ -6,16 +6,52 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      judge: '',
+      isJudge: false,
       numPlayers: 0,
       cardsPlaced: [],
       name: ''
     };
+    this.handleQuit = this.handleQuit.bind(this);
+  }
+  componentDidMount() {
+    socket.on(
+      'judge',
+      function() {
+        console.log('INITIALLY I AM THE JUDGE', socket.id);
+        this.setState({
+          isJudge: true
+        });
+      }.bind(this)
+    );
+    socket.on('open judge', () => {
+      console.log('APPARENTLY I AM NOW THE JUDGE', socket.id);
+      socket.emit('claimed judge');
+      this.setState({
+        isJudge: true
+      });
+    });
+    socket.on('not judge', () => {
+      console.log(' NOT THE JUDGE', socket.id);
+      this.setState({
+        isJudge: false
+      });
+    });
+
+    socket.on('test', function() {
+      console.log('HEREEEEEEEEEEEEE');
+    });
+  }
+  handleQuit() {
+    if (this.state.isJudge) {
+      console.log(socket);
+      socket.emit('free judge');
+    }
   }
   render() {
-    console.log(this.props.user);
+    console.log('AM I THE JUDGE?: ', this.state.isJudge);
     return (
       <div>
+        {this.state.isJudge && <button onClick={this.handleQuit}>Quit</button>}
         {this.state.numPlayers &&
         this.state.cardsPlaced.length > 0 &&
         this.state.cardsPlaced === this.state.numPlayers - 1 ? (
@@ -28,27 +64,14 @@ class Game extends Component {
               style={{ backgroundColor: '#000', marginBottom: '15px' }}
             >
               <div className="content">
-                <div
-                  style={{
-                    overflowWrap: 'break-word',
-                    color: '#fff',
-                    fontWeight: 'bold',
-                    minWidth: '4.32cm',
-                    minHeight: '10cm',
-                    fontSize: '1.25em',
-                    textAlign: 'left',
-                    verticalAlign: 'top',
-                    backgroundColor: '#000'
-                    // display: 'inline-block',
-                    // margin: '0'
-                  }}
-                >
+                <div id="black-card">
                   Kristy is an art director living in New York.
                   WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                   WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                   WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                 </div>
               </div>
+              <div class="ui white button">Reset</div>
             </div>
           </div>
         )}

@@ -3,10 +3,22 @@ module.exports = io => {
     console.log(
       `A socket connection to the server has been made: ${socket.id}`
     );
-    // socket.isJudge = Object.keys(io.sockets.sockets).length === 1;
-    // console.log(socket.isJudge);
+    let socketList = Object.keys(io.sockets.sockets);
+    if (socketList.length === 1) {
+      io.to(`${socket.id}`).emit('judge');
+    }
+
+    io.on('claimed judge', () => {
+      console.log('freeeeeeee');
+    });
+
     socket.on('disconnect', () => {
+      // socket.broadcast.emit('free judge');
       console.log(`Connection ${socket.id} has left the building`);
+      const top = Object.keys(io.sockets.sockets)[0];
+      if (top) {
+        io.to(top).emit('open judge');
+      }
     });
   });
 };
