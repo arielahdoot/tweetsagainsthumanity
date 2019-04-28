@@ -1,5 +1,13 @@
 body {
   font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+#grace {
+  font-size: 50px;
+  text-decoration: none;
+  font-family: 'Bangers', cursive;
+  color: #dd4b39;
 }
 
 a {
