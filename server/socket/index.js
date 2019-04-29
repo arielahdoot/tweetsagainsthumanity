@@ -8,12 +8,12 @@ module.exports = io => {
       io.to(`${socket.id}`).emit('judge');
     }
 
-    io.on('claimed judge', () => {
-      console.log('freeeeeeee');
+    socket.on('update black card server', data => {
+      // console.log(data);
+      socket.broadcast.emit('update black card', data);
     });
 
     socket.on('disconnect', () => {
-      // socket.broadcast.emit('free judge');
       console.log(`Connection ${socket.id} has left the building`);
       const top = Object.keys(io.sockets.sockets)[0];
       if (top) {

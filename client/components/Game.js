@@ -21,6 +21,7 @@ class Game extends Component {
     this.setState({
       currentBlackCard: res.data
     });
+    socket.emit('update black card server', this.state.currentBlackCard);
   }
 
   componentDidMount() {
@@ -41,6 +42,13 @@ class Game extends Component {
         isJudge: true
       });
     });
+
+    socket.on('update black card', data => {
+      console.log('UPDATING BLACK CARD', socket.id);
+      this.setState({
+        currentBlackCard: data
+      });
+    });
   }
 
   async updateBlackCard() {
@@ -50,7 +58,6 @@ class Game extends Component {
   }
 
   render() {
-    console.log('AM I THE JUDGE?: ', this.state.isJudge);
     const blackCard = this.state.currentBlackCard;
     if (!blackCard) {
       return (
@@ -78,9 +85,11 @@ class Game extends Component {
               <div className="content">
                 <div id="black-card">{blackCard.question}</div>
               </div>
-              <div className="ui white button" onClick={this.updateBlackCard}>
-                New Card
-              </div>
+              {this.state.isJudge && (
+                <div className="ui white button" onClick={this.updateBlackCard}>
+                  New Card
+                </div>
+              )}
             </div>
           </div>
         )}

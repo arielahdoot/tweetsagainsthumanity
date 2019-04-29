@@ -9,7 +9,6 @@ router.get('/', async (req, res, next) => {
         used: false
       }
     });
-    console.log(nextQ);
     res.json(nextQ);
   } catch (error) {
     next(error);
