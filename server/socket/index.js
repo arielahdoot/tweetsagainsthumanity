@@ -10,6 +10,11 @@ module.exports = io => {
 
     io.emit('new player', socketList.length);
 
+    socket.on('victory server', data => {
+      const owner = data.owner;
+      io.to(owner).emit('victory');
+    });
+
     socket.on('update black card server', data => {
       // console.log(data);
       socket.broadcast.emit('update black card', data);

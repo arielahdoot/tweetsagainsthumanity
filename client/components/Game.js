@@ -15,10 +15,12 @@ class Game extends Component {
       numPlayers: 0,
       cardsPlaced: [],
       currentBlackCard: '',
-      name: ''
+      name: '',
+      numBlackCards: 0
     };
     this.updateBlackCard = this.updateBlackCard.bind(this);
     this.submitCard = this.submitCard.bind(this);
+    this.selectWinningCard = this.selectWinningCard.bind(this);
   }
 
   submitCard(newCard) {
@@ -33,15 +35,32 @@ class Game extends Component {
     socket.emit('card submitted server', cards);
   }
 
+  async updateBlackCard() {
+    const id = this.state.currentBlackCard.id;
+    await axios.put(`api/blackCards/${id}`);
+    this.getCurrentBlackCard();
+  }
+
   async getCurrentBlackCard() {
     const res = await axios.get('/api/blackCards');
     this.setState({
       currentBlackCard: res.data
     });
+    socket.emit('update black card server', res.data);
+  }
+
+  selectWinningCard(winningCard) {
+    socket.emit('victory server', winningCard);
   }
 
   componentDidMount() {
     this.getCurrentBlackCard();
+
+    socket.on('victory', () => {
+      this.setState(prevState => {
+        return { numBlackCards: prevState.numBlackCards + 1 };
+      });
+    });
 
     socket.on(
       'judge',
@@ -60,7 +79,7 @@ class Game extends Component {
     });
 
     socket.on('update black card', data => {
-      console.log('UPDATING BLACK CARD', socket.id);
+      console.log('UPDATING BLACK CARD', socket.id, data);
       this.setState({
         currentBlackCard: data
       });
@@ -81,13 +100,6 @@ class Game extends Component {
     });
   }
 
-  async updateBlackCard() {
-    const id = this.state.currentBlackCard.id;
-    await axios.put(`api/blackCards/${id}`);
-    this.getCurrentBlackCard();
-    socket.emit('update black card server', this.state.currentBlackCard);
-  }
-
   render() {
     console.log(
       this.state.numPlayers,
@@ -106,20 +118,26 @@ class Game extends Component {
         this.state.cardsPlaced.length > 0 &&
         this.state.cardsPlaced.length === this.state.numPlayers - 1 ? (
           <div>
-            <h2>SHOW ME ALL THE SUBMITTED CARDS</h2>
-            <WhiteCards cards={this.state.cardsPlaced} />
+            <h2>Wins: {this.state.numBlackCards}</h2>
+            <WhiteCards
+              cards={this.state.cardsPlaced}
+              submitCard={this.selectWinningCard}
+              isJudge={this.state.isJudge}
+              judging={true}
+            />
           </div>
         ) : (
           <div>
-            <h2> SHOW ME THE ONE BLACK CARD</h2>
+            <h2>Wins: {this.state.numBlackCards}</h2>
             <BlackCard
               blackCard={this.state.currentBlackCard}
               isJudge={this.state.isJudge}
               updateBlackCard={this.updateBlackCard}
             />
             <PlayerView
-              judge={this.state.isJudge}
+              isJudge={this.state.isJudge}
               submitCard={this.submitCard}
+              judging={false}
             />
           </div>
         )}

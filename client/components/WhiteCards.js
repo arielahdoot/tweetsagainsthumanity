@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 
-const WhiteCards = ({ cards, submitCard }) => {
+const WhiteCards = ({ cards, submitCard, judging, isJudge }) => {
   return (
     <div className="ui stackable centered grid" style={{ marginLeft: '10px' }}>
       {cards.length > 0 &&
@@ -14,19 +15,25 @@ const WhiteCards = ({ cards, submitCard }) => {
                 }}
               >
                 <div className="content">
-                  <div id="white-card">
-                    Kristy is an art director living in New York.
-                    WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                    WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                    WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                  <div id="white-card">{card.tweet}</div>
+                </div>
+                {judging ? (
+                  isJudge && (
+                    <div
+                      className="ui toggle button"
+                      onClick={() => submitCard(card)}
+                    >
+                      Choose
+                    </div>
+                  )
+                ) : (
+                  <div
+                    className="ui toggle button"
+                    onClick={() => submitCard(card)}
+                  >
+                    Choose
                   </div>
-                </div>
-                <div
-                  className="ui toggle button"
-                  onClick={() => submitCard(card)}
-                >
-                  Choose
-                </div>
+                )}
               </div>
             </div>
           );
