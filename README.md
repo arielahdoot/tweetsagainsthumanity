@@ -28,4 +28,7 @@ npm run start-dev
 * make persistent upon refresh
 * while not persistent and only one room, ban new entrants when game is already in progress
 
+![alt text](https://github.com/AAAhdoot/tweetsagainsthumanity/blob/master/screenshot.png)
+
+
 
