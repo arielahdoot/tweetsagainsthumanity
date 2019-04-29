@@ -13,12 +13,20 @@ class PlayerView extends Component {
   }
 
   async componentDidMount() {
-    // const cards = [1, 2, 3, 4, 5, 6, 7];
-    const cards = [];
-    for (let i = 0; i < 7; i++) {
-      const res = await axios.get('https://api.kanye.rest');
-      cards.push({ tweet: res.data.quote, owner: socket.id });
-    }
+    const cards = [
+      { tweet: 1, owner: socket.id },
+      { tweet: 2, owner: socket.id },
+      { tweet: 3, owner: socket.id },
+      { tweet: 4, owner: socket.id },
+      { tweet: 5, owner: socket.id },
+      { tweet: 6, owner: socket.id },
+      { tweet: 7, owner: socket.id }
+    ];
+    // const cards = [];
+    // for (let i = 0; i < 7; i++) {
+    //   const res = await axios.get('https://api.kanye.rest');
+    //   cards.push({ tweet: res.data.quote, owner: socket.id });
+    // }
     this.setState({
       cards
     });

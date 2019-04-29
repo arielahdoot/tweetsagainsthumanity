@@ -50,15 +50,24 @@ class Game extends Component {
   }
 
   selectWinningCard(winningCard) {
-    socket.emit('victory server', winningCard);
+    socket.emit('victory server', winningCard, socket.id);
   }
 
   componentDidMount() {
     this.getCurrentBlackCard();
 
+    socket.on('new round', () => {
+      this.setState({
+        cardsPlaced: []
+      });
+      this.updateBlackCard();
+    });
+
     socket.on('victory', () => {
       this.setState(prevState => {
-        return { numBlackCards: prevState.numBlackCards + 1 };
+        return {
+          numBlackCards: prevState.numBlackCards + 1
+        };
       });
     });
 
@@ -75,6 +84,13 @@ class Game extends Component {
       console.log('APPARENTLY I AM NOW THE JUDGE', socket.id);
       this.setState({
         isJudge: true
+      });
+    });
+
+    socket.on('no longer judge', () => {
+      console.log('APPARENTLY I AM NO LONGER THE JUDGE', socket.id);
+      this.setState({
+        isJudge: false
       });
     });
 
@@ -104,7 +120,8 @@ class Game extends Component {
     console.log(
       this.state.numPlayers,
       this.state.cardsPlaced,
-      this.state.cardsPlaced.length
+      this.state.cardsPlaced.length,
+      this.state.isJudge
     );
     const blackCard = this.state.currentBlackCard;
     if (!blackCard) {
