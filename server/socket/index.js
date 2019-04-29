@@ -15,6 +15,11 @@ module.exports = io => {
       socket.broadcast.emit('update black card', data);
     });
 
+    socket.on('card submitted server', data => {
+      console.log('CARD SUBMITTED IN SERVER', data);
+      socket.broadcast.emit('card submitted', data);
+    });
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`);
       const top = Object.keys(io.sockets.sockets)[0];

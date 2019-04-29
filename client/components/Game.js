@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PlayerView from './PlayerView';
 import socket from '../socket';
 import axios from 'axios';
+import { runInThisContext } from 'vm';
+import { timingSafeEqual } from 'crypto';
+import BlackCard from './BlackCard';
 
 class Game extends Component {
   constructor(props) {
@@ -14,6 +17,19 @@ class Game extends Component {
       name: ''
     };
     this.updateBlackCard = this.updateBlackCard.bind(this);
+    this.submitCard = this.submitCard.bind(this);
+  }
+
+  submitCard(newCard) {
+    console.log('NEWCARD FRONT-END', newCard);
+    const cards = [...this.state.cardsPlaced];
+    cards.push(newCard);
+    console.log(cards);
+    this.setState({
+      cardsPlaced: cards
+    });
+
+    socket.emit('card submitted server', cards);
   }
 
   async getCurrentBlackCard() {
@@ -21,7 +37,6 @@ class Game extends Component {
     this.setState({
       currentBlackCard: res.data
     });
-    socket.emit('update black card server', this.state.currentBlackCard);
   }
 
   componentDidMount() {
@@ -56,16 +71,28 @@ class Game extends Component {
         numPlayers: data
       });
     });
+
+    socket.on('card submitted', data => {
+      console.log('UPDATING CARDS SUBMITTED', socket.id);
+      this.setState({
+        cardsPlaced: data
+      });
+    });
   }
 
   async updateBlackCard() {
     const id = this.state.currentBlackCard.id;
     await axios.put(`api/blackCards/${id}`);
     this.getCurrentBlackCard();
+    socket.emit('update black card server', this.state.currentBlackCard);
   }
 
   render() {
-    console.log(this.state.numPlayers);
+    console.log(
+      this.state.numPlayers,
+      this.state.cardsPlaced,
+      this.state.cardsPlaced.length
+    );
     const blackCard = this.state.currentBlackCard;
     if (!blackCard) {
       return (
@@ -76,30 +103,20 @@ class Game extends Component {
       <div>
         {this.state.numPlayers &&
         this.state.cardsPlaced.length > 0 &&
-        this.state.cardsPlaced === this.state.numPlayers - 1 ? (
+        this.state.cardsPlaced.length === this.state.numPlayers - 1 ? (
           <h2>SHOW ME ALL THE SUBMITTED CARDS</h2>
         ) : (
           <div>
             <h2> SHOW ME THE ONE BLACK CARD</h2>
-            <div
-              className="ui card centered"
-              style={{ backgroundColor: '#000', marginBottom: '15px' }}
-            >
-              <div className="content">
-                <div id="black-card">{blackCard.question}</div>
-              </div>
-              {this.state.isJudge && (
-                <div className="ui white button" onClick={this.updateBlackCard}>
-                  New Card
-                </div>
-              )}
-            </div>
+            <BlackCard
+              blackCard={this.state.currentBlackCard}
+              isJudge={this.state.isJudge}
+              updateBlackCard={this.updateBlackCard}
+            />
           </div>
         )}
-        {/* Render the list of messages */
-        this.state.cardsPlaced.map(message => <li>{message}</li>)}
 
-        <PlayerView judge={this.state.isJudge} />
+        <PlayerView judge={this.state.isJudge} submitCard={this.submitCard} />
       </div>
     );
   }
