@@ -8,6 +8,8 @@ module.exports = io => {
       io.to(`${socket.id}`).emit('judge');
     }
 
+    io.emit('new player', socketList.length);
+
     socket.on('update black card server', data => {
       // console.log(data);
       socket.broadcast.emit('update black card', data);

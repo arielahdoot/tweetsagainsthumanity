@@ -49,6 +49,13 @@ class Game extends Component {
         currentBlackCard: data
       });
     });
+
+    socket.on('new player', data => {
+      console.log('UPDATING NUMBER OF PLAYERS', socket.id);
+      this.setState({
+        numPlayers: data
+      });
+    });
   }
 
   async updateBlackCard() {
@@ -58,15 +65,11 @@ class Game extends Component {
   }
 
   render() {
+    console.log(this.state.numPlayers);
     const blackCard = this.state.currentBlackCard;
     if (!blackCard) {
       return (
-        <div className="ui segment">
-          <p />
-          <div className="ui active dimmer">
-            <div className="ui loader" />
-          </div>
-        </div>
+        <div className="ui active centered inline text loader">Loading</div>
       );
     }
     return (
