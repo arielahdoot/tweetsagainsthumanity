@@ -95,7 +95,7 @@ class Game extends Component {
     });
 
     socket.on('update black card', data => {
-      console.log('UPDATING BLACK CARD', socket.id, data);
+      console.log('UPDATING BLACK CARD', socket.id);
       this.setState({
         currentBlackCard: data
       });

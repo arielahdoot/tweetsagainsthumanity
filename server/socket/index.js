@@ -26,7 +26,6 @@ module.exports = io => {
     });
 
     socket.on('card submitted server', data => {
-      console.log('CARD SUBMITTED IN SERVER', data);
       socket.broadcast.emit('card submitted', data);
     });
 
