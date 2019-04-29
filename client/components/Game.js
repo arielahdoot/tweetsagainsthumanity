@@ -50,8 +50,18 @@ class Game extends Component {
   }
 
   render() {
-    console.log('AM I THE JUDGE?: ', this.state.isJudge, this.state.currentQ);
+    console.log('AM I THE JUDGE?: ', this.state.isJudge);
     const blackCard = this.state.currentBlackCard;
+    if (!blackCard) {
+      return (
+        <div className="ui segment">
+          <p />
+          <div className="ui active dimmer">
+            <div className="ui loader" />
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
         {this.state.numPlayers &&
