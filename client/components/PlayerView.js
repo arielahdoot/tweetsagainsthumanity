@@ -15,12 +15,12 @@ class PlayerView extends Component {
   }
 
   async componentDidMount() {
-    // const cards = [0, 0, 0, 0, 0, 0, 0];
-    const cards = [];
-    for (let i = 0; i < 7; i++) {
-      const res = await axios.get('https://api.kanye.rest');
-      cards.push(res.data.quote);
-    }
+    const cards = [1, 2, 3, 4, 5, 6, 7];
+    // const cards = [];
+    // for (let i = 0; i < 7; i++) {
+    //   const res = await axios.get('https://api.kanye.rest');
+    //   cards.push(res.data.quote);
+    // }
     this.setState({
       cards
     });

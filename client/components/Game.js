@@ -5,6 +5,7 @@ import axios from 'axios';
 import { runInThisContext } from 'vm';
 import { timingSafeEqual } from 'crypto';
 import BlackCard from './BlackCard';
+import WhiteCards from './WhiteCards';
 
 class Game extends Component {
   constructor(props) {
@@ -104,7 +105,10 @@ class Game extends Component {
         {this.state.numPlayers &&
         this.state.cardsPlaced.length > 0 &&
         this.state.cardsPlaced.length === this.state.numPlayers - 1 ? (
-          <h2>SHOW ME ALL THE SUBMITTED CARDS</h2>
+          <div>
+            <h2>SHOW ME ALL THE SUBMITTED CARDS</h2>
+            <WhiteCards cards={this.state.cardsPlaced} />
+          </div>
         ) : (
           <div>
             <h2> SHOW ME THE ONE BLACK CARD</h2>
@@ -113,10 +117,12 @@ class Game extends Component {
               isJudge={this.state.isJudge}
               updateBlackCard={this.updateBlackCard}
             />
+            <PlayerView
+              judge={this.state.isJudge}
+              submitCard={this.submitCard}
+            />
           </div>
         )}
-
-        <PlayerView judge={this.state.isJudge} submitCard={this.submitCard} />
       </div>
     );
   }
