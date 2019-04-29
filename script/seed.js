@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require('../server/db');
-const { User, Game, bCard } = require('../server/db/models');
+const { User, Game, blackCard } = require('../server/db/models');
 const questions = require('./questions');
 
 async function seed() {
@@ -17,7 +17,7 @@ async function seed() {
     name: 'autumn-bread-8184'
   });
 
-  await bCard.bulkCreate(questions);
+  await blackCard.bulkCreate(questions);
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);

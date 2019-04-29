@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PlayerView from './PlayerView';
 import socket from '../socket';
+import axios from 'axios';
 
 class Game extends Component {
   constructor(props) {
@@ -9,11 +10,22 @@ class Game extends Component {
       isJudge: false,
       numPlayers: 0,
       cardsPlaced: [],
+      currentBlackCard: '',
       name: ''
     };
-    this.handleQuit = this.handleQuit.bind(this);
+    this.updateBlackCard = this.updateBlackCard.bind(this);
   }
+
+  async getCurrentBlackCard() {
+    const res = await axios.get('/api/blackCards');
+    this.setState({
+      currentBlackCard: res.data
+    });
+  }
+
   componentDidMount() {
+    this.getCurrentBlackCard();
+
     socket.on(
       'judge',
       function() {
@@ -25,60 +37,47 @@ class Game extends Component {
     );
     socket.on('open judge', () => {
       console.log('APPARENTLY I AM NOW THE JUDGE', socket.id);
-      socket.emit('claimed judge');
       this.setState({
         isJudge: true
       });
     });
-    socket.on('not judge', () => {
-      console.log(' NOT THE JUDGE', socket.id);
-      this.setState({
-        isJudge: false
-      });
-    });
+  }
 
-    socket.on('test', function() {
-      console.log('HEREEEEEEEEEEEEE');
-    });
+  async updateBlackCard() {
+    const id = this.state.currentBlackCard.id;
+    await axios.put(`api/blackCards/${id}`);
+    this.getCurrentBlackCard();
   }
-  handleQuit() {
-    if (this.state.isJudge) {
-      console.log(socket);
-      socket.emit('free judge');
-    }
-  }
+
   render() {
-    console.log('AM I THE JUDGE?: ', this.state.isJudge);
+    console.log('AM I THE JUDGE?: ', this.state.isJudge, this.state.currentQ);
+    const blackCard = this.state.currentBlackCard;
     return (
       <div>
-        {this.state.isJudge && <button onClick={this.handleQuit}>Quit</button>}
         {this.state.numPlayers &&
         this.state.cardsPlaced.length > 0 &&
         this.state.cardsPlaced === this.state.numPlayers - 1 ? (
-          <h1>SHOW ME ALL THE SUBMITTED CARDS</h1>
+          <h2>SHOW ME ALL THE SUBMITTED CARDS</h2>
         ) : (
           <div>
-            <h1> SHOW ME THE ONE BLACK CARD</h1>
+            <h2> SHOW ME THE ONE BLACK CARD</h2>
             <div
               className="ui card centered"
               style={{ backgroundColor: '#000', marginBottom: '15px' }}
             >
               <div className="content">
-                <div id="black-card">
-                  Kristy is an art director living in New York.
-                  WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                  WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                  WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                </div>
+                <div id="black-card">{blackCard.question}</div>
               </div>
-              <div class="ui white button">Reset</div>
+              <div className="ui white button" onClick={this.updateBlackCard}>
+                New Card
+              </div>
             </div>
           </div>
         )}
         {/* Render the list of messages */
         this.state.cardsPlaced.map(message => <li>{message}</li>)}
 
-        <PlayerView />
+        <PlayerView judge={this.state.isJudge} />
       </div>
     );
   }

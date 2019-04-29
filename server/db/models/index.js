@@ -1,5 +1,5 @@
 const User = require('./user');
-const bCard = require('./blackCard');
+const blackCard = require('./blackCard');
 const Game = require('./game');
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -8,11 +8,11 @@ const Game = require('./game');
  *    BlogPost.belongsTo(User)
  */
 User.belongsTo(Game);
-bCard.belongsTo(User);
-bCard.belongsTo(Game);
-Game.hasOne(bCard);
+blackCard.belongsTo(User);
+blackCard.belongsTo(Game);
+Game.hasOne(blackCard);
 Game.hasMany(User);
-User.hasMany(bCard);
+User.hasMany(blackCard);
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -22,6 +22,6 @@ User.hasMany(bCard);
  */
 module.exports = {
   User,
-  bCard,
+  blackCard,
   Game
 };

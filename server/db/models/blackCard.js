@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const bCard = db.define('bcard', {
+const blackCard = db.define('blackcard', {
   question: {
     type: Sequelize.TEXT
   },
@@ -14,4 +14,4 @@ const bCard = db.define('bcard', {
   }
 });
 
-module.exports = bCard;
+module.exports = blackCard;
