@@ -15,9 +15,9 @@ module.exports = io => {
       const owner = data.owner;
       io.to(owner).emit('victory');
       io.to(owner).emit('judge');
+      io.to(judgeSocketId).emit('no longer judge');
       io.emit('new round');
       io.emit('get new card');
-      io.to(judgeSocketId).emit('no longer judge');
     });
 
     socket.on('update black card server', data => {
@@ -32,6 +32,7 @@ module.exports = io => {
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`);
+      io.sockets.emit('player left');
       const top = Object.keys(io.sockets.sockets)[0];
       if (top) {
         io.to(top).emit('open judge');

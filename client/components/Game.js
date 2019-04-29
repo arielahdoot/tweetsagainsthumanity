@@ -108,6 +108,14 @@ class Game extends Component {
       });
     });
 
+    socket.on('player left', () => {
+      console.log('PLAYER JUST LEFT', socket.id);
+      const newNum = this.state.numPlayers - 1;
+      this.setState({
+        numPlayers: newNum
+      });
+    });
+
     socket.on('card submitted', data => {
       console.log('UPDATING CARDS SUBMITTED', socket.id);
       this.setState({
@@ -136,6 +144,7 @@ class Game extends Component {
         this.state.cardsPlaced.length === this.state.numPlayers - 1 ? (
           <div>
             <h2>Wins: {this.state.numBlackCards}</h2>
+            <h2>Number of Players: {this.state.numPlayers}</h2>
             <BlackCard
               blackCard={this.state.currentBlackCard}
               isJudge={this.state.isJudge}
@@ -157,6 +166,7 @@ class Game extends Component {
         ) : (
           <div>
             <h2>Wins: {this.state.numBlackCards}</h2>
+            <h2>Number of Players: {this.state.numPlayers}</h2>
             <BlackCard
               blackCard={this.state.currentBlackCard}
               isJudge={this.state.isJudge}

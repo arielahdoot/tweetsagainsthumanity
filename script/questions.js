@@ -68,7 +68,7 @@ const questions = [
     used: false
   },
   {
-    question: "What's the next Happy Meal&reg; toy?",
+    question: "What's the next Happy Meal toy?",
     pick: 1,
     used: false
   },
@@ -345,7 +345,7 @@ const questions = [
     pick: 2
   },
   {
-    question: 'Lifetime&reg; presents _, the story of _.',
+    question: 'Lifetime presents _, the story of _.',
     pick: 2
   },
   {
@@ -432,7 +432,7 @@ const questions = [
   },
   {
     question:
-      'During his childhood, Salvador Dal&iacute; produced hundreds of paintings of _.',
+      'During his childhood, Salvador Dali produced hundreds of paintings of _.',
     pick: 1,
     used: false
   },
@@ -726,7 +726,7 @@ const questions = [
   },
   {
     question:
-      'Call the law offices of Goldstein &amp; Goldstein, because no one should have to tolerate _ in the workplace.',
+      'Call the law offices of Goldstein and Goldstein, because no one should have to tolerate _ in the workplace.',
     pick: 1,
     used: false
   },
@@ -1284,11 +1284,6 @@ const questions = [
     used: false
   },
   {
-    question: 'Dustin Browder demands more _ in StarCraft&reg;.',
-    pick: 1,
-    used: false
-  },
-  {
     question: 'Welcome to my secret lair on _.',
     pick: 1,
     used: false
@@ -1736,7 +1731,7 @@ const questions = [
     used: false
   },
   {
-    question: 'Alcoholic games of Clue&reg; lead to _.',
+    question: 'Alcoholic games of Clue lead to _.',
     pick: 1,
     used: false
   },
@@ -1986,7 +1981,7 @@ const questions = [
     used: false
   },
   {
-    question: '_. So kawaii!! &lt;3 &lt;3',
+    question: '_. So kawaii!!',
     pick: 1,
     used: false
   },
@@ -2050,10 +2045,6 @@ const questions = [
       'In the future of 199X, the barrier between our world and the demon world is broken, and thousands of monsters invade our realm to feed upon _.',
     pick: 1,
     used: false
-  },
-  {
-    question: 'From the creators of Tiger &amp; Bunny: _ &amp; _!!',
-    pick: 2
   },
   {
     question: 'In truth, the EVA units are actually powered by the souls of _.',
