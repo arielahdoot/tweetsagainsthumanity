@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BlackCard = ({ blackCard, isJudge, updateBlackCard }) => {
+const BlackCard = ({ blackCard, isJudge, updateBlackCard, judging }) => {
   return (
     <div>
       <div
@@ -10,17 +10,20 @@ const BlackCard = ({ blackCard, isJudge, updateBlackCard }) => {
         <div className="content">
           <div id="black-card">{blackCard.question}</div>
         </div>
-        {isJudge && (
-          <div className="ui white button" onClick={updateBlackCard}>
-            New Card
+        {isJudge &&
+          !judging && (
+            <div className="ui white button" onClick={updateBlackCard}>
+              New Card
+            </div>
+          )}
+      </div>
+      {isJudge &&
+        !judging && (
+          <div className="ui active centered inline text loader">
+            You are the judge, please wait for all the other cards to be
+            submitted
           </div>
         )}
-      </div>
-      {isJudge && (
-        <div className="ui active centered inline text loader">
-          You are the judge, please wait for all the other cards to be submitted
-        </div>
-      )}
     </div>
   );
 };

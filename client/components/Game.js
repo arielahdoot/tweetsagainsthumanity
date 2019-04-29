@@ -136,6 +136,12 @@ class Game extends Component {
         this.state.cardsPlaced.length === this.state.numPlayers - 1 ? (
           <div>
             <h2>Wins: {this.state.numBlackCards}</h2>
+            <BlackCard
+              blackCard={this.state.currentBlackCard}
+              isJudge={this.state.isJudge}
+              updateBlackCard={this.updateBlackCard}
+              judging={true}
+            />
             <WhiteCards
               cards={this.state.cardsPlaced}
               submitCard={this.selectWinningCard}
@@ -155,6 +161,7 @@ class Game extends Component {
               blackCard={this.state.currentBlackCard}
               isJudge={this.state.isJudge}
               updateBlackCard={this.updateBlackCard}
+              judging={false}
             />
             <PlayerView
               isJudge={this.state.isJudge}
