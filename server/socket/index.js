@@ -10,12 +10,14 @@ module.exports = io => {
 
     io.emit('new player', socketList.length);
 
-    socket.on('victory server', (data, socketId) => {
+    socket.on('victory server', (data, judgeSocketId) => {
+      console.log('HERE');
       const owner = data.owner;
       io.to(owner).emit('victory');
       io.to(owner).emit('judge');
-      io.to(socketId).emit('no longer judge');
       io.emit('new round');
+      io.emit('get new card');
+      io.to(judgeSocketId).emit('no longer judge');
     });
 
     socket.on('update black card server', data => {

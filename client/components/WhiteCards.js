@@ -5,7 +5,7 @@ const WhiteCards = ({ cards, submitCard, judging, isJudge }) => {
   return (
     <div className="ui stackable centered grid" style={{ marginLeft: '10px' }}>
       {cards.length > 0 &&
-        cards.map(card => {
+        cards.map((card, index) => {
           return (
             <div className="four wide column">
               <div
@@ -29,7 +29,7 @@ const WhiteCards = ({ cards, submitCard, judging, isJudge }) => {
                 ) : (
                   <div
                     className="ui toggle button"
-                    onClick={() => submitCard(card)}
+                    onClick={() => submitCard(card, index)}
                   >
                     Choose
                   </div>

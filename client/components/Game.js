@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PlayerView from './PlayerView';
 import socket from '../socket';
 import axios from 'axios';
-import { runInThisContext } from 'vm';
-import { timingSafeEqual } from 'crypto';
 import BlackCard from './BlackCard';
 import WhiteCards from './WhiteCards';
 
@@ -16,20 +14,21 @@ class Game extends Component {
       cardsPlaced: [],
       currentBlackCard: '',
       name: '',
-      numBlackCards: 0
+      numBlackCards: 0,
+      submitted: false
     };
     this.updateBlackCard = this.updateBlackCard.bind(this);
     this.submitCard = this.submitCard.bind(this);
     this.selectWinningCard = this.selectWinningCard.bind(this);
   }
 
-  submitCard(newCard) {
-    console.log('NEWCARD FRONT-END', newCard);
+  submitCard(newCard, index) {
+    newCard.index = index;
     const cards = [...this.state.cardsPlaced];
     cards.push(newCard);
-    console.log(cards);
     this.setState({
-      cardsPlaced: cards
+      cardsPlaced: cards,
+      submitted: true
     });
 
     socket.emit('card submitted server', cards);
@@ -58,7 +57,8 @@ class Game extends Component {
 
     socket.on('new round', () => {
       this.setState({
-        cardsPlaced: []
+        cardsPlaced: [],
+        submitted: false
       });
       this.updateBlackCard();
     });
@@ -142,6 +142,11 @@ class Game extends Component {
               isJudge={this.state.isJudge}
               judging={true}
             />
+            {!this.state.isJudge && (
+              <div className="ui active centered inline text loader">
+                Waiting for the judge
+              </div>
+            )}
           </div>
         ) : (
           <div>
@@ -155,6 +160,7 @@ class Game extends Component {
               isJudge={this.state.isJudge}
               submitCard={this.submitCard}
               judging={false}
+              submitted={this.state.submitted}
             />
           </div>
         )}
