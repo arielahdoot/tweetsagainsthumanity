@@ -4,7 +4,7 @@
 Replicate the card game Cards Against Humanity, where the white card options are tweets by Kanye West (and soon to be other tweets as well)
 
 ### Deployed Link
-(http://tweetsagainsthumanity.herokuapp.com)
+http://tweetsagainsthumanity.herokuapp.com
 
 ### Requirements
 * PostgresSQL
