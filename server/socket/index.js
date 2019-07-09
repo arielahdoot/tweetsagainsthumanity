@@ -20,12 +20,18 @@ module.exports = io => {
       io.emit('get new card');
     });
 
+    socket.on('close out', () => {
+      console.log('hello');
+      io.removeListener('connection');
+    });
+
     socket.on('update black card server', data => {
       // console.log(data);
       socket.broadcast.emit('update black card', data);
     });
 
     socket.on('card submitted server', data => {
+      console.log('whaaaaaaaaaaaa');
       socket.broadcast.emit('card submitted', data);
     });
 

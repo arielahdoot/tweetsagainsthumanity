@@ -32,6 +32,7 @@ class Game extends Component {
     });
 
     socket.emit('card submitted server', cards);
+    socket.emit('close out');
   }
 
   async updateBlackCard() {
